@@ -14,16 +14,6 @@
    <string>Gym Management System</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QListWidget" name="listWidget">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>40</y>
-      <width>311</width>
-      <height>431</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_add">
     <property name="geometry">
      <rect>
@@ -239,6 +229,21 @@
     </property>
     <property name="text">
      <string>Email ID:</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>40</y>
+      <width>321</width>
+      <height>431</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
     </property>
    </widget>
   </widget>
