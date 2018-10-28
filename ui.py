@@ -6,14 +6,46 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtSql
+
+import sqlite3
 
 class Ui_MainWindow(object):
+
+    #######################################################################################
+    def display(self):
+        connection = sqlite3.connect('gymDB.db')
+        query = "SELECT * FROM gymmembers"
+        result = connection.execute(query)
+        self.tableWidget.setRowCount(0)
+
+        for row_number, row_data in enumerate(result):
+            self.tableWidget.insertRow(row_number)
+            for col_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number, col_number, QtWidgets.QTableWidgetItem(str(data)))
+
+        connection.close()
+
+    def add(self):
+        connection = sqlite3.connect('gymDB.db')
+        name = self.lineEdit_name.text()
+        address = self.lineEdit_address.text()
+        contact = self.lineEdit_contact.text()
+        email = self.lineEdit_email.text()
+
+        cur = connection.cursor()
+        cur.execute('''INSERT INTO gymmembers(name, address, contact, email) VALUES(?,?,?,?)''', (name, address, contact, email))
+        
+        connection.commit()
+        connection.close()
+
     def clear(self):
         self.lineEdit_name.setText('')
         self.lineEdit_address.setText('')
         self.lineEdit_contact.setText('')
         self.lineEdit_email.setText('')
+ 
+    #######################################################################################
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -44,9 +76,19 @@ class Ui_MainWindow(object):
         font.setPointSize(9)
         self.pushButton_clear.setFont(font)
         self.pushButton_clear.setObjectName("pushButton_clear")
-        ###
+
+        #######################################################################################
         self.pushButton_clear.clicked.connect(self.clear)
-        ###
+
+        self.pushButton_add.clicked.connect(self.add)
+        self.pushButton_add.clicked.connect(self.display)
+        self.pushButton_add.clicked.connect(self.clear)
+
+        self.pushButton_update.clicked.connect(self.display)
+        self.pushButton_delete.clicked.connect(self.display)
+
+        #######################################################################################
+
         self.lineEdit_name = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_name.setGeometry(QtCore.QRect(162, 110, 181, 31))
         self.lineEdit_name.setObjectName("lineEdit_name")
@@ -100,8 +142,8 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
-        self.tableWidget.setRowCount(0)
+        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setRowCount(5)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -109,6 +151,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
