@@ -56,7 +56,29 @@ class Ui_MainWindow(object):
             self.lineEdit_email.setText(email)
 
         cur = connection.cursor()
-        cur.execute('''DELETE FROM gymmembers WHERE memberID = ?''',(memberID))
+        cur.execute('''DELETE FROM gymmembers WHERE memberID = ?;''', (memberID))
+        
+        connection.commit()
+        connection.close()
+
+    def update(self):
+        connection = sqlite3.connect('gymDB.db')
+
+        if self.tableWidget.currentIndex().row() > -1:
+            row = self.tableWidget.currentIndex().row()
+            memberID = self.tableWidget.item(row,0).text()
+            name = self.tableWidget.item(row,1).text()
+            address = self.tableWidget.item(row,2).text()
+            contact = self.tableWidget.item(row,3).text()
+            email = self.tableWidget.item(row,4).text()
+
+            self.lineEdit_name.setText(name)
+            self.lineEdit_address.setText(address)
+            self.lineEdit_contact.setText(contact)
+            self.lineEdit_email.setText(email)
+
+        cur = connection.cursor()
+        cur.execute('''UPDATE gymmembers SET name = ?, address = ?, contact = ?, email = ? WHERE memberID = ?''', (name, address, contact, email, memberID))
         
         connection.commit()
         connection.close()
