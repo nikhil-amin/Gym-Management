@@ -39,6 +39,34 @@ class Ui_MainWindow(object):
         connection.commit()
         connection.close()
 
+    def delete(self):
+        connection = sqlite3.connect('gymDB.db')
+
+        if self.tableWidget.currentIndex().row() > -1:
+            row = self.tableWidget.currentIndex().row()
+            memberID = self.tableWidget.item(row,0).text()
+            name = self.tableWidget.item(row,1).text()
+            address = self.tableWidget.item(row,2).text()
+            contact = self.tableWidget.item(row,3).text()
+            email = self.tableWidget.item(row,4).text()
+
+            self.lineEdit_name.setText(name)
+            self.lineEdit_address.setText(address)
+            self.lineEdit_contact.setText(contact)
+            self.lineEdit_email.setText(email)
+
+
+        # name = self.lineEdit_name.text()
+        # address = self.lineEdit_address.text()
+        # contact = self.lineEdit_contact.text()
+        # email = self.lineEdit_email.text()
+
+        cur = connection.cursor()
+        cur.execute('''DELETE FROM gymmembers WHERE memberID = ?''',(memberID))
+        
+        connection.commit()
+        connection.close()
+
     def clear(self):
         self.lineEdit_name.setText('')
         self.lineEdit_address.setText('')
@@ -85,6 +113,8 @@ class Ui_MainWindow(object):
         self.pushButton_add.clicked.connect(self.clear)
 
         self.pushButton_update.clicked.connect(self.display)
+
+        self.pushButton_delete.clicked.connect(self.delete)
         self.pushButton_delete.clicked.connect(self.display)
 
         #######################################################################################
@@ -151,6 +181,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        self.tableWidget.itemClicked.connect(self.delete)
 
 
     def retranslateUi(self, MainWindow):
