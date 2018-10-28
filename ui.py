@@ -9,6 +9,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
+    def clear(self):
+        self.lineEdit_name.setText('CLEARED')
+
+        name = self.lineEdit_name.text()
+        print(name)
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(724, 531)
@@ -38,6 +44,9 @@ class Ui_MainWindow(object):
         font.setPointSize(9)
         self.pushButton_clear.setFont(font)
         self.pushButton_clear.setObjectName("pushButton_clear")
+        ###
+        self.pushButton_clear.clicked.connect(self.clear)
+        ###
         self.lineEdit_name = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_name.setGeometry(QtCore.QRect(162, 110, 181, 31))
         self.lineEdit_name.setObjectName("lineEdit_name")
