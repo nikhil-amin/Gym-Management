@@ -10,10 +10,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def clear(self):
-        self.lineEdit_name.setText('CLEARED')
-
-        name = self.lineEdit_name.text()
-        print(name)
+        self.lineEdit_name.setText('')
+        self.lineEdit_address.setText('')
+        self.lineEdit_contact.setText('')
+        self.lineEdit_email.setText('')
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
