@@ -55,12 +55,6 @@ class Ui_MainWindow(object):
             self.lineEdit_contact.setText(contact)
             self.lineEdit_email.setText(email)
 
-
-        # name = self.lineEdit_name.text()
-        # address = self.lineEdit_address.text()
-        # contact = self.lineEdit_contact.text()
-        # email = self.lineEdit_email.text()
-
         cur = connection.cursor()
         cur.execute('''DELETE FROM gymmembers WHERE memberID = ?''',(memberID))
         
@@ -112,10 +106,13 @@ class Ui_MainWindow(object):
         self.pushButton_add.clicked.connect(self.display)
         self.pushButton_add.clicked.connect(self.clear)
 
+        self.pushButton_update.clicked.connect(self.update)
         self.pushButton_update.clicked.connect(self.display)
+        self.pushButton_update.clicked.connect(self.clear)
 
         self.pushButton_delete.clicked.connect(self.delete)
         self.pushButton_delete.clicked.connect(self.display)
+        self.pushButton_delete.clicked.connect(self.clear)
 
         #######################################################################################
 
