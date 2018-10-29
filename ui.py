@@ -26,6 +26,20 @@ class Ui_MainWindow(object):
 
         connection.close()
 
+    def fill_details(self):
+        if self.tableWidget.currentIndex().row() > -1:
+            row = self.tableWidget.currentIndex().row()
+            memberID = self.tableWidget.item(row,0).text()
+            name = self.tableWidget.item(row,1).text()
+            address = self.tableWidget.item(row,2).text()
+            contact = self.tableWidget.item(row,3).text()
+            email = self.tableWidget.item(row,4).text()
+
+            self.lineEdit_name.setText(name)
+            self.lineEdit_address.setText(address)
+            self.lineEdit_contact.setText(contact)
+            self.lineEdit_email.setText(email)
+
     def add(self):
         connection = sqlite3.connect('gymDB.db')
         name = self.lineEdit_name.text()
@@ -54,14 +68,16 @@ class Ui_MainWindow(object):
             self.lineEdit_address.setText(address)
             self.lineEdit_contact.setText(contact)
             self.lineEdit_email.setText(email)
+        
+        cur = connection.cursor()
+        query = "DELETE FROM gymmembers WHERE memberID = {}".format(memberID)
+        
         try: 
-            cur = connection.cursor()
-            cur.execute('''DELETE FROM gymmembers WHERE memberID = ?''', (memberID))
-            
+            cur.execute(query)          
             connection.commit()
-            connection.close()
         except:
-            print("DELETE ERROR: ",sys.exc_info()[0])
+            print(sys.exc_info())
+            cur.rollback()
 
     def update(self):
         connection = sqlite3.connect('gymDB.db')
@@ -210,7 +226,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.tableWidget.itemClicked.connect(self.delete)
+        self.tableWidget.itemClicked.connect(self.fill_details)
 
 
     def retranslateUi(self, MainWindow):
