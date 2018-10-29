@@ -54,12 +54,14 @@ class Ui_MainWindow(object):
             self.lineEdit_address.setText(address)
             self.lineEdit_contact.setText(contact)
             self.lineEdit_email.setText(email)
-
-        cur = connection.cursor()
-        cur.execute('''DELETE FROM gymmembers WHERE memberID = ?;''', (memberID))
-        
-        connection.commit()
-        connection.close()
+        try: 
+            cur = connection.cursor()
+            cur.execute('''DELETE FROM gymmembers WHERE memberID = (?)''', (memberID))
+            
+            connection.commit()
+            connection.close()
+        except:
+            print("DELETE ERROR: ",sys.exc_info()[0])
 
     def update(self):
         connection = sqlite3.connect('gymDB.db')
@@ -77,11 +79,14 @@ class Ui_MainWindow(object):
             self.lineEdit_contact.setText(contact)
             self.lineEdit_email.setText(email)
 
-        cur = connection.cursor()
-        cur.execute('''UPDATE gymmembers SET name = ?, address = ?, contact = ?, email = ? WHERE memberID = ?''', (name, address, contact, email, memberID))
-        
-        connection.commit()
-        connection.close()
+        try:
+            cur = connection.cursor()
+            cur.execute('''UPDATE gymmembers SET name = ?, address = ?, contact = ?, email = ? WHERE memberID = ?''', (name, address, contact, email, memberID))
+            
+            connection.commit()
+            connection.close()
+        except:
+            print("UPDATE ERROR: ",sys.exc_info()[0])
 
     def clear(self):
         self.lineEdit_name.setText('')
